@@ -6,7 +6,7 @@ function setImage() {
   console.log("set image");
   const gif = document.querySelector(".js-gif");
 
-  gif.src = "./ralph.gif";
+  gif.src = "./assets/images/ralph.gif";
 
   console.log(gif);
 
@@ -78,7 +78,7 @@ function hideText() {
 
 function playSound() {
   console.log("play sound");
-  var audio = new Audio("./sample.mp3");
+  var audio = new Audio("./assets/sounds/sample.mp3");
   
   audio.loop = false;
   audio.play(); 

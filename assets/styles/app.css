@@ -8,7 +8,7 @@ body {
 
 .overlay {
   position: fixed;
-  background-image: url("./background.svg");
+  background-image: url("../images/background.svg");
   -webkit-animation: 100s scroll infinite linear;
   -moz-animation: 100s scroll infinite linear;
   -o-animation: 100s scroll infinite linear;
