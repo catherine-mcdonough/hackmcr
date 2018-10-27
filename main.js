@@ -19,6 +19,7 @@ function scroll() {
   var id = setInterval(frame, 10);
 
   function frame() {
+    console.log("scrolling");
     pos++;
     elem.style.left = pos + "px";
 
@@ -32,11 +33,11 @@ function scroll() {
 
       setTimeout(function(){ 
         console.log("restart animation");
-        setInterval(frame, 10);
+        id = setInterval(frame, 10);
        }, 5000);
     }
 
-    if (pos >= windowEdge) {
+    if (pos === windowEdge) {
       clearInterval(id);
       setImage();
     }
