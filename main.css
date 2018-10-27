@@ -32,6 +32,8 @@
   display: block;
   height: auto;
   width: 100%;
+  border: 3px solid white;
+  border-radius: 2px;
 }
 
 @-webkit-keyframes scroll {

@@ -1,32 +1,48 @@
-function scroll() {
-  var elem = document.querySelector(".js-animate");   
-  var pos = -200;
-  var id = setInterval(frame, 5);
-  function frame() {
-      console.log(pos);
-      pos++; 
-      elem.style.left = pos + 'px'; 
-
-    const windowEdge = window.innerWidth;
-    
-    if (pos >= windowEdge) {
-      clearInterval(id);
-      replaceImage();
-    }
-  }
+function init() {
+  setImage();
 }
 
-function replaceImage() {
-  console.log("replace image");
-  const gif = document.querySelector(".js-gif");  
+function setImage() {
+  console.log("set image");
+  const gif = document.querySelector(".js-gif");
 
-  gif.src = './ralph.gif';
+  gif.src = "./ralph.gif";
 
   console.log(gif);
 
   scroll();
 }
 
+function scroll() {
+  var elem = document.querySelector(".js-animate");
+  var pos = -200;
+  var id = setInterval(frame, 10);
+
+  function frame() {
+    pos++;
+    elem.style.left = pos + "px";
+
+    const windowEdge = window.innerWidth;
+    const imageWidth = elem.offsetWidth;
+    const imageEdge = windowEdge / 2 - imageWidth / 2;
+
+    if (pos === imageEdge) {
+      console.log("stop here!!");
+      clearInterval(id);
+
+      setTimeout(function(){ 
+        console.log("restart animation");
+        setInterval(frame, 10);
+       }, 5000);
+    }
+
+    if (pos >= windowEdge) {
+      clearInterval(id);
+      setImage();
+    }
+  }
+}
+
 window.addEventListener("load", () => {
-  replaceImage();
+  init();
 });
