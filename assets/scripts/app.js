@@ -1,9 +1,11 @@
 function init() {
+  getData();
   setImage();
 }
 
 function setImage() {
   console.log("set image");
+
   const gif = document.querySelector(".js-gif");
 
   gif.src = "./assets/images/ralph.gif";
@@ -19,7 +21,7 @@ function scroll() {
   var id = setInterval(frame, 10);
 
   function frame() {
-    console.log("scrolling");
+    // console.log("scrolling");
     pos++;
     elem.style.left = pos + "px";
 
@@ -47,11 +49,21 @@ function scroll() {
   }
 }
 
+function setText(text) {
+
+  console.log(text);
+
+  const textBox = document.querySelector('.js-text-box');
+  const textContent = text;
+
+  textBox.innerHTML = textContent;
+
+  console.log(queue);
+}
+
 function showText() {
   var elem = document.querySelector(".js-animate");
   const textBox = document.querySelector('.js-text-box');
-
-  const textContent = "A test speech bubble";
 
   var elem = document.querySelector(".js-animate");
 
@@ -61,8 +73,6 @@ function showText() {
 
   textBox.style.left = (textBoxPosRight - (textBoxPosRight * 0.15)) + "px";
   textBox.style.top = (textBoxPosTop - (elemHeight / 2)) + "px";
-
-  textBox.innerHTML = textContent;
 
   textBox.classList.add('text-box--show');
 }
@@ -81,9 +91,38 @@ function playSound() {
   var audio = new Audio("./assets/sounds/sample.mp3");
   
   audio.loop = false;
-  audio.play(); 
+  // audio.play(); 
 }
 
+function getData() {
+  var request = new XMLHttpRequest();
+
+  request.open('GET', 'https://hackmcr.azurewebsites.net/api/gethackmessages?timestamp=20081027%2000:00', true);
+
+  request.onload = function () {
+    var data = JSON.parse(this.response);
+
+    if (request.status >= 200 && request.status < 400) {
+      data.forEach(item => {
+        const message = item.Message;
+        // enqueue an item
+        var stack = [];
+        stack.push(message);       // stack is now [2]
+        var i = stack.pop(); // stack is now [2]
+        console.log(i); 
+        setText(i);
+
+      });
+    } else {
+      console.log('error');
+    }
+
+    console.log("queue" + queue);
+    }
+
+  // Send request
+  request.send();
+}
 
 window.addEventListener("load", () => {
   init();
