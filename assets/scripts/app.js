@@ -1,3 +1,5 @@
+var stack = [];
+
 function init() {
   getData();
   setImage();
@@ -44,21 +46,30 @@ function scroll() {
 
     if (pos === windowEdge) {
       clearInterval(id);
+      checkForData();
       setImage();
+      setText();
     }
   }
 }
 
-function setText(text) {
-
-  console.log(text);
+function setText() {
+  var text = stack.shift(); // stack is now [2]
+  console.log(text); 
 
   const textBox = document.querySelector('.js-text-box');
   const textContent = text;
 
   textBox.innerHTML = textContent;
+}
 
-  console.log(queue);
+function checkForData() {
+  if (stack.length === 0) {
+    console.log("there's no data");
+    getData();
+  } else {
+    console.log("there's already data");
+  }
 }
 
 function showText() {
@@ -106,18 +117,12 @@ function getData() {
       data.forEach(item => {
         const message = item.Message;
         // enqueue an item
-        var stack = [];
         stack.push(message);       // stack is now [2]
-        var i = stack.pop(); // stack is now [2]
-        console.log(i); 
-        setText(i);
-
       });
+      setText();
     } else {
       console.log('error');
     }
-
-    console.log("queue" + queue);
     }
 
   // Send request
