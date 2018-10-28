@@ -1,4 +1,8 @@
-var stack = [];
+var messageStack = [];
+var gifStack = [];
+var soundStack = [];
+
+var checkForDataInterval;
 
 function init() {
   getData();
@@ -7,10 +11,12 @@ function init() {
 
 function setImage() {
   console.log("set image");
+  var gifContent = gifStack.shift();
+  console.log(gifContent);
 
   const gif = document.querySelector(".js-gif");
 
-  gif.src = "./assets/images/ralph.gif";
+  gif.src = gifContent;
 
   console.log(gif);
 
@@ -20,7 +26,7 @@ function setImage() {
 function scroll() {
   var elem = document.querySelector(".js-animate");
   var pos = -200;
-  var id = setInterval(frame, 10);
+  var scrollInterval = setInterval(frame, 10);
 
   function frame() {
     // console.log("scrolling");
@@ -33,19 +39,19 @@ function scroll() {
 
     if (pos === imageEdge) {
       console.log("stop here!!");
-      clearInterval(id);
+      clearInterval(scrollInterval);
       showText();
       playSound();
 
       setTimeout(function(){ 
         console.log("restart animation");
         hideText();
-        id = setInterval(frame, 10);
+        scrollInterval = setInterval(frame, 10);
        }, 5000);
     }
 
     if (pos === windowEdge) {
-      clearInterval(id);
+      clearInterval(scrollInterval);
       checkForData();
       setImage();
       setText();
@@ -54,7 +60,7 @@ function scroll() {
 }
 
 function setText() {
-  var text = stack.shift(); // stack is now [2]
+  var text = messageStack.shift(); // stack is now [2]
   console.log(text); 
 
   const textBox = document.querySelector('.js-text-box');
@@ -64,7 +70,7 @@ function setText() {
 }
 
 function checkForData() {
-  if (stack.length === 0) {
+  if (messageStack.length === 0) {
     console.log("there's no data");
     getData();
   } else {
@@ -106,9 +112,21 @@ function playSound() {
 }
 
 function getData() {
+  var date = new Date();
+
+  var hours = date.getHours() < 10 ? "0" + date.getHours().toString() : date.getHours().toString();
+  var mins = date.getMinutes() < 10 ? "0" + date.getMinutes().toString() : date.getMinutes().toString();
+
+  var day = date.getDate().toString();
+  var month = (date.getMonth() + 1).toString();
+  var year = date.getFullYear().toString();
+
+  const currentDate = year + month + day;
+  const currentTime = hours + mins;
+
   var request = new XMLHttpRequest();
 
-  request.open('GET', 'https://hackmcr.azurewebsites.net/api/gethackmessages?timestamp=20081027%2000:00', true);
+  request.open('GET', 'https://hackmcr.azurewebsites.net/api/gethackmessages?timestamp=' + currentDate + ' ' + '03:00', true);
 
   request.onload = function () {
     var data = JSON.parse(this.response);
@@ -116,12 +134,15 @@ function getData() {
     if (request.status >= 200 && request.status < 400) {
       data.forEach(item => {
         const message = item.Message;
+        const gif = item.Gif;
         // enqueue an item
-        stack.push(message);       // stack is now [2]
+        messageStack.push(message);
+        gifStack.push(gif);
       });
       setText();
     } else {
       console.log('error');
+      console.log('no new data');
     }
     }
 
