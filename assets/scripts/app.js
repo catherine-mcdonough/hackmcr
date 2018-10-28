@@ -7,9 +7,6 @@ var sound;
 var checkForDataInterval;
 var sentiment;
 
-const sadContainers = document.querySelectorAll('.js-negative');
-const happyContainers = document.querySelectorAll('.js-positive');
-
 function init() {
   getData();
 }
@@ -54,6 +51,8 @@ function setSentiment(){
   console.log(sentiment);
 
   if (!sentiment) {
+    const sadContainers = document.querySelectorAll('.js-negative');
+    const happyContainers = document.querySelectorAll('.js-positive');
     console.log("no sentiment content");
     for (var sadContainer of sadContainers) {
       sadContainer.classList.remove('js-negative--show');
@@ -69,6 +68,9 @@ function setSentiment(){
 
 function applySentiment(){
   if (sentiment === 'positive') {
+    const sadContainers = document.querySelectorAll('.js-negative');
+    const happyContainers = document.querySelectorAll('.js-positive');
+    
     console.log("positive sentiment");
 
     for (var sadContainer of sadContainers) {
@@ -80,6 +82,9 @@ function applySentiment(){
     }
   }
   if (sentiment === 'neutral') {
+    const sadContainers = document.querySelectorAll('.js-negative');
+    const happyContainers = document.querySelectorAll('.js-positive');
+
     console.log("neutral sentiment");
 
     for (var sadContainer of sadContainers) {
@@ -91,6 +96,9 @@ function applySentiment(){
     }
   }
   if (sentiment === 'negative') {
+    const sadContainers = document.querySelectorAll('.js-negative');
+    const happyContainers = document.querySelectorAll('.js-positive');
+
     console.log("negative sentiment");
 
     for (var sadContainer of sadContainers) {
@@ -171,8 +179,10 @@ function hideText() {
 
   textBox.classList.remove('text-box--show');
 
-  textBox.style.left = 0;
-  textBox.style.top = 0;
+  setTimeout(function(){ 
+    textBox.style.left = 0;
+    textBox.style.top = 0;
+   }, 2000);
 }
 
 function playSound() {
