@@ -2,11 +2,11 @@ var messageStack = [];
 var gifStack = [];
 var soundStack = [];
 
+var sound;
 var checkForDataInterval;
 
 function init() {
   getData();
-  setImage();
 }
 
 function setImage() {
@@ -16,11 +16,32 @@ function setImage() {
 
   const gif = document.querySelector(".js-gif");
 
-  gif.src = gifContent;
+  if (!gifContent) {
+    gif.src = "./assets/images/homer.gif";
+    console.log("no gif content");
+  } else {
+    console.log("gif content");
+    gif.src = gifContent;
+  }
 
   console.log(gif);
 
   scroll();
+}
+
+function setText() {
+  var text = messageStack.shift(); // stack is now [2]
+  console.log(text); 
+
+  const textBox = document.querySelector('.js-text-box');
+  const textContent = text;
+
+  textBox.innerHTML = textContent;
+}
+
+function setSound(){
+  sound = soundStack.shift();
+  console.log(sound);
 }
 
 function scroll() {
@@ -55,18 +76,9 @@ function scroll() {
       checkForData();
       setImage();
       setText();
+      setSound();
     }
   }
-}
-
-function setText() {
-  var text = messageStack.shift(); // stack is now [2]
-  console.log(text); 
-
-  const textBox = document.querySelector('.js-text-box');
-  const textContent = text;
-
-  textBox.innerHTML = textContent;
 }
 
 function checkForData() {
@@ -105,10 +117,10 @@ function hideText() {
 
 function playSound() {
   console.log("play sound");
-  var audio = new Audio("./assets/sounds/sample.mp3");
+  var audio = new Audio(sound);
   
   audio.loop = false;
-  // audio.play(); 
+  audio.play(); 
 }
 
 function getData() {
@@ -126,7 +138,7 @@ function getData() {
 
   var request = new XMLHttpRequest();
 
-  request.open('GET', 'https://hackmcr.azurewebsites.net/api/gethackmessages?timestamp=' + currentDate + ' ' + '03:00', true);
+  request.open('GET', 'https://hackmcr.azurewebsites.net/api/gethackmessages?timestamp=' + currentDate + ' ' + '04:25', true);
 
   request.onload = function () {
     var data = JSON.parse(this.response);
@@ -135,11 +147,15 @@ function getData() {
       data.forEach(item => {
         const message = item.Message;
         const gif = item.Gif;
+        const audio = item.Sound;
         // enqueue an item
         messageStack.push(message);
         gifStack.push(gif);
+        soundStack.push(audio);
       });
+      setImage();
       setText();
+      setSound();
     } else {
       console.log('error');
       console.log('no new data');
