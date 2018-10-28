@@ -1,9 +1,14 @@
 var messageStack = [];
 var gifStack = [];
 var soundStack = [];
+var sentimentStack = [];
 
 var sound;
 var checkForDataInterval;
+var sentiment;
+
+const sadContainers = document.querySelectorAll('.js-negative');
+const happyContainers = document.querySelectorAll('.js-positive');
 
 function init() {
   getData();
@@ -44,6 +49,60 @@ function setSound(){
   console.log(sound);
 }
 
+function setSentiment(){
+  sentiment = sentimentStack.shift();
+  console.log(sentiment);
+
+  if (!sentiment) {
+    console.log("no sentiment content");
+    for (var sadContainer of sadContainers) {
+      sadContainer.classList.remove('js-negative--show');
+    }
+
+    for (var happyContainer of happyContainers) {
+      happyContainer.classList.remove('js-positive--show');
+    }
+  } else {
+    applySentiment();
+  }
+}
+
+function applySentiment(){
+  if (sentiment === 'positive') {
+    console.log("positive sentiment");
+
+    for (var sadContainer of sadContainers) {
+      sadContainer.classList.remove('js-negative--show');
+    }
+
+    for (var happyContainer of happyContainers) {
+      happyContainer.classList.add('js-positive--show');
+    }
+  }
+  if (sentiment === 'neutral') {
+    console.log("neutral sentiment");
+
+    for (var sadContainer of sadContainers) {
+      sadContainer.classList.remove('js-negative--show');
+    }
+
+    for (var happyContainer of happyContainers) {
+      happyContainer.classList.remove('js-positive--show');
+    }
+  }
+  if (sentiment === 'negative') {
+    console.log("negative sentiment");
+
+    for (var sadContainer of sadContainers) {
+      sadContainer.classList.add('js-negative--show');
+    }
+
+    for (var happyContainer of happyContainers) {
+      happyContainer.classList.remove('js-positive--show');
+    }
+  }
+}
+
 function scroll() {
   var elem = document.querySelector(".js-animate");
   var pos = -200;
@@ -77,6 +136,7 @@ function scroll() {
       setImage();
       setText();
       setSound();
+      setSentiment();
     }
   }
 }
@@ -148,14 +208,17 @@ function getData() {
         const message = item.Message;
         const gif = item.Gif;
         const audio = item.Sound;
+        const sentimentVal = item.Sentiment;
         // enqueue an item
         messageStack.push(message);
         gifStack.push(gif);
         soundStack.push(audio);
+        sentimentStack.push(sentimentVal);
       });
       setImage();
       setText();
       setSound();
+      setSentiment();
     } else {
       console.log('error');
       console.log('no new data');

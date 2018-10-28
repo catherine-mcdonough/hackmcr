@@ -53,6 +53,76 @@ body {
   z-index: 5;
 }
 
+.confetti {
+  position: fixed;
+  background-image: url("../images/party.gif");
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.js-negative, .js-positive {
+  display: none;
+}
+
+.js-negative--show, .js-positive--show {
+  display: block;
+}
+
+.rain {
+  position: fixed;
+  background-image: url("../images/rain.gif");
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.sad-cloud {
+  position: fixed;
+  background-image: url("../images/sadcloud.gif");
+  background-size: contain;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  z-index: 5;
+}
+
+.grey {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.3);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.party-parrot {
+  position: fixed;
+  background-image: url("../images/partyparrot.gif");
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+
+.confetti {
+  position: fixed;
+  background-image: url("../images/party.gif");
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
 .container {
   width: 100%;
   height: 100%;
